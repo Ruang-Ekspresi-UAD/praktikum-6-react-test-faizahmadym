@@ -3,6 +3,69 @@ import { Counter, Greeting, AlertButton } from './latihan';
 import '@testing-library/jest-dom';
 import React from 'react';
 
-test('contoh tes sederhana', () => {
-    expect(1 + 1).toBe(2);
+describe('Counter Component', () => {
+  test('Default value must be 0', () => {
+    render(<Counter />);
+    const counterValue = screen.getByTestId('counter-value');
+    expect(counterValue).toHaveTextContent('0');
   });
+
+  test('Increment works when button clicked', () => {
+    render(<Counter />);
+    const incrementButton = screen.getByText('Increment');
+    const counterValue = screen.getByTestId('counter-value');
+
+    fireEvent.click(incrementButton);
+    expect(counterValue).toHaveTextContent('1');
+  });
+
+  test('Decrement works when button clicked', () => {
+    render(<Counter />);
+    const decrementButton = screen.getByText('Decrement');
+    const counterValue = screen.getByTestId('counter-value');
+
+    fireEvent.click(decrementButton);
+    expect(counterValue).toHaveTextContent('-1');
+  });
+
+  test('Reset the count using reset button', () => {
+    render(<Counter />);
+    const incrementButton = screen.getByText('Increment');
+    const resetButton = screen.getByText('Reset');
+    const counterValue = screen.getByTestId('counter-value');
+
+    fireEvent.click(incrementButton); 
+    expect(counterValue).toHaveTextContent('1');
+    
+    fireEvent.click(resetButton);
+    expect(counterValue).toHaveTextContent('0');
+  });
+});
+
+describe('Greeting Component', () => {
+    test("Displays greeting with user's name", () => {
+      render(<Greeting name="faizahmad" />);
+      screen.debug(); 
+      const greetingMessage = screen.getByTestId('greeting-message');
+      expect(greetingMessage).toHaveTextContent('Hello, faizahmad');
+    });
+  
+    test("Displays greeting with instructor's name", () => {
+      render(<Greeting name="faiz" />);
+      screen.debug();
+      const greetingMessage = screen.getByTestId('greeting-message');
+      expect(greetingMessage).toHaveTextContent('Hello, faiz');
+    });
+  });
+
+describe('AlertButton Component', () => {
+  test('Triggers alert with correct message when clicked', () => {
+    window.alert = jest.fn();
+    render(<AlertButton message="This is an alert!" />);
+
+    const alertButton = screen.getByText('Show Alert');
+    fireEvent.click(alertButton);
+
+    expect(window.alert).toHaveBeenCalledWith('This is an alert!');
+  });
+});

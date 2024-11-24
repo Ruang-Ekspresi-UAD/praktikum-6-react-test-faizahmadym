@@ -5,23 +5,36 @@ import Counter from './counter';
 import Display from './display';
 
 describe('Counter Component', () => {
-    test('renders the initial count value as 0', () => {
-     render(<Counter />);
-     const countValue = screen.getByTestId('count-value');
-     expect(countValue).toHaveTextContent('0');
-    });
-    test('increments count when increment button is clicked', () => {
-     render(<Counter />);
-     const countValue = screen.getByTestId('count-value');
-     const incrementButton = screen.getByText('Increment');
-     fireEvent.click(incrementButton);
-     expect(countValue).toHaveTextContent('1');
-    });
-    test('decrements count when decrement button is clicked', () => {
-        render(<Counter />);
- const countValue = screen.getByTestId('count-value');
- const decrementButton = screen.getByText('Decrement');
- fireEvent.click(decrementButton);
- expect(countValue).toHaveTextContent('-1');
+  test('Counter default value must be 0', () => {
+    render(<Counter />);
+    const counterValue = screen.getByTestId('counter-value');
+    expect(counterValue).toHaveTextContent('0');
+  });
+
+  test('Increment works when button clicked', () => {
+    render(<Counter />);
+    const incrementButton = screen.getByTestId('increment-button');
+    const counterValue = screen.getByTestId('counter-value');
+
+    fireEvent.click(incrementButton);
+    expect(counterValue).toHaveTextContent('1');
+  });
+
+  test('Decrement works when button clicked', () => {
+    render(<Counter />);
+    const decrementButton = screen.getByTestId('decrement-button');
+    const counterValue = screen.getByTestId('counter-value');
+
+    fireEvent.click(decrementButton);
+    expect(counterValue).toHaveTextContent('-1');
+  });
 });
+
+describe('Display Component', () => {
+  test('Display has correct value', () => {
+    const mockValue = 10;
+    render(<Display value={mockValue} />);
+    const displayValue = screen.getByTestId('display-value');
+    expect(displayValue).toHaveTextContent('10');
+  });
 });
